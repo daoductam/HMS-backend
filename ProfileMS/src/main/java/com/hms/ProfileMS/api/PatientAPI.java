@@ -34,6 +34,12 @@ public class PatientAPI {
 
     }
 
+    @GetMapping("/getProfileId/{id}")
+    public ResponseEntity<Long> getProfileId(@PathVariable Long id){
+        return new ResponseEntity<>(patientService.getPatientById(id).getProfilePictureId(), HttpStatus.OK);
+
+    }
+
     @PutMapping("/update")
     public ResponseEntity<PatientDTO> updatePatient(@RequestBody PatientDTO patientDTO){
         return new ResponseEntity<>(patientService.updatePatient(patientDTO), HttpStatus.OK);
@@ -57,4 +63,11 @@ public class PatientAPI {
         return new ResponseEntity<>(patientService.getPatientsById(ids),
                 HttpStatus.OK);
     }
+
+    @PostMapping("/listByIds")
+    public ResponseEntity<List<PatientDTO>> getPatientsByIds(@RequestBody List<Long> ids) {
+        List<PatientDTO> patients = patientService.findAllByIds(ids);
+        return ResponseEntity.ok(patients);
+    }
+
 }

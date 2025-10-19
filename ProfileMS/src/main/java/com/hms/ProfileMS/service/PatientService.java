@@ -18,5 +18,7 @@ public interface PatientService {
 
     List<DoctorDropdown> getPatientsById(List<Long> ids);
 
+    List<PatientDTO> findAllByIds(List<Long> ids);
+
 }
 

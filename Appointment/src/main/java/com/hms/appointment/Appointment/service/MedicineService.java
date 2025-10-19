@@ -8,4 +8,5 @@ public interface MedicineService {
     Long saveMedicine(MedicineDTO request) ;
     List<MedicineDTO> saveAllMedicines(List<MedicineDTO> requestList);
     List<MedicineDTO> getAllMedicinesByPrescriptionId(Long prescriptionId);
+    List<MedicineDTO> getMedicinesByPrescriptionIds(List<Long> prescriptionIds);
 }

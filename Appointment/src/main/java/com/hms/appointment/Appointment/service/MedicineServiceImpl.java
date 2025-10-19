@@ -35,4 +35,10 @@ public class MedicineServiceImpl implements MedicineService{
         ))
                 .stream().map(Medicine::toDTO).toList();
     }
+
+    @Override
+    public List<MedicineDTO> getMedicinesByPrescriptionIds(List<Long> prescriptionIds) {
+        return medicineRepository.findAllByPrescription_IdIn(prescriptionIds)
+                .stream().map(Medicine::toDTO).toList();
+    }
 }

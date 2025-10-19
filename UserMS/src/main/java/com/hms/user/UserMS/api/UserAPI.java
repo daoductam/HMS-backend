@@ -1,6 +1,8 @@
 package com.hms.user.UserMS.api;
 
+import com.hms.user.UserMS.clients.Profile;
 import com.hms.user.UserMS.dto.LoginDTO;
+import com.hms.user.UserMS.dto.RegistrationCountsDTO;
 import com.hms.user.UserMS.dto.ResponseDTO;
 import com.hms.user.UserMS.dto.UserDTO;
 import com.hms.user.UserMS.exception.ErrorCode;
@@ -54,5 +56,15 @@ public class UserAPI {
         final  String jwt = jwtUtil.generateToken(userDetails);
         return new ResponseEntity<>(jwt, HttpStatus.OK);
 
+    }
+
+    @GetMapping("/getProfile/{id}")
+    public ResponseEntity<Long> getProfile(@PathVariable Long id) {
+        return new ResponseEntity<>(userService.getProfile(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/getRegistrationCounts")
+    public ResponseEntity<RegistrationCountsDTO> getMonthlyRegistrationCounts() {
+        return new ResponseEntity<>(userService.getMonthlyRegistrationCounts(), HttpStatus.OK);
     }
 }

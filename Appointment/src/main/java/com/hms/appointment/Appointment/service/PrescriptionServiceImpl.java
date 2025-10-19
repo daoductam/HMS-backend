@@ -1,10 +1,7 @@
 package com.hms.appointment.Appointment.service;
 
 import com.hms.appointment.Appointment.clients.ProfileClient;
-import com.hms.appointment.Appointment.dto.DoctorName;
-import com.hms.appointment.Appointment.dto.PatientDTO;
-import com.hms.appointment.Appointment.dto.PrescriptionDTO;
-import com.hms.appointment.Appointment.dto.PrescriptionDetails;
+import com.hms.appointment.Appointment.dto.*;
 import com.hms.appointment.Appointment.entity.Prescription;
 import com.hms.appointment.Appointment.exception.ErrorCode;
 import com.hms.appointment.Appointment.exception.HmsException;
@@ -124,5 +121,11 @@ public class PrescriptionServiceImpl implements PrescriptionService{
             }
         });
         return prescriptionDetails;
+    }
+
+    @Override
+    public List<MedicineDTO> getMedicineByPatientId(Long patientId) {
+        List<Long> pIds = prescriptionRepository.findAllPreIdsByPatient(patientId);
+        return medicineService.getMedicinesByPrescriptionIds(pIds);
     }
 }

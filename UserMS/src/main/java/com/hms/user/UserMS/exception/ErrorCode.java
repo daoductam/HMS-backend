@@ -36,6 +36,7 @@ public enum ErrorCode {
     ERROR_HANDLING_WEBHOOK(1021, "Error handling webhook", HttpStatus.BAD_REQUEST),
     USER_ALREADY_EXISTS(1022, "User đã tồn tại trong hệ thống", HttpStatus.CONFLICT),
     INVALID_CREDENTIALS(1023, "Invalid credentials", HttpStatus.BAD_REQUEST),
+    INVALID_USER_ROLE(1023, "Invalid user role", HttpStatus.BAD_REQUEST),
 
     ;
     private int code;

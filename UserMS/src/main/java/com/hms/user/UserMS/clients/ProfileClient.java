@@ -16,4 +16,10 @@ public interface ProfileClient {
 
     @PostMapping("/profile/patient/add")
     Long addPatient(@RequestBody UserDTO userDTO);
+
+    @GetMapping("/profile/doctor/getProfileId/{id}")
+    Long getDoctor(@PathVariable("id") Long id);
+
+    @GetMapping("/profile/patient/getProfileId/{id}")
+    Long getPatient(@PathVariable("id") Long id);
 }

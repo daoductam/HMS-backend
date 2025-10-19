@@ -1,5 +1,6 @@
 package com.hms.appointment.Appointment.service;
 
+import com.hms.appointment.Appointment.dto.MedicineDTO;
 import com.hms.appointment.Appointment.dto.PrescriptionDTO;
 import com.hms.appointment.Appointment.dto.PrescriptionDetails;
 
@@ -11,4 +12,5 @@ public interface PrescriptionService {
     PrescriptionDTO getPrescriptionById(Long prescriptionId);
     List<PrescriptionDetails> getPrescriptionByPatientId(Long patientId);
     List<PrescriptionDetails> getPrescriptions();
+    List<MedicineDTO> getMedicineByPatientId(Long patientId);
 }

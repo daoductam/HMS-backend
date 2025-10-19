@@ -9,6 +9,9 @@ import com.hms.appointment.Appointment.repository.AppointmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -108,4 +111,69 @@ public class AppointmentServiceImpl implements AppointmentService{
                     return appointment;
                 }).toList();
     }
+
+    @Override
+    public List<MonthlyVisitDTO> getAppointmentCountByPatient(Long patientId) {
+        return appointmentRepository.countCurrentYearVisitsByPatient(patientId);
+    }
+
+    @Override
+    public List<MonthlyVisitDTO> getAppointmentCountByDoctor(Long doctorId) {
+        return appointmentRepository.countCurrentYearVisitsByDoctor(doctorId);
+    }
+
+    @Override
+    public List<MonthlyVisitDTO> getPatientCountByDoctor(Long doctorId) {
+        return appointmentRepository.countCurrentYearPatientsByDoctor(doctorId);
+    }
+
+    @Override
+    public List<MonthlyVisitDTO> getAppointmentCount() {
+        return appointmentRepository.countCurrentYearVisits();
+    }
+
+    @Override
+    public List<ReasonCountDTO> getReasonCountByPatient(Long patientId) {
+        return appointmentRepository.countReasonsByPatientId(patientId);
+    }
+
+    @Override
+    public List<ReasonCountDTO> getReasonCountByDoctor(Long doctorId) {
+        return appointmentRepository.countReasonsByDoctorId(doctorId);
+    }
+
+    @Override
+    public List<ReasonCountDTO> getReasonCount() {
+        return appointmentRepository.countReasons();
+    }
+
+    @Override
+    public List<AppointmentDetails> getTodaysAppointment() {
+        LocalDate today = LocalDate.now();
+        LocalDateTime startOfDay = today.atStartOfDay();
+        LocalDateTime endOfDay = today.atTime(LocalTime.MAX);
+        return appointmentRepository.findByAppointmentTimeBetween(startOfDay, endOfDay)
+                .stream().map(appointment -> {
+                    DoctorDTO doctorDTO = profileClient.getDoctorById(appointment.getDoctorId());
+                    PatientDTO patientDTO = profileClient.getPatientById(appointment.getPatientId());
+                    return AppointmentDetails.builder()
+                            .id(appointment.getId())
+                            .patientId(appointment.getPatientId())
+                            .patientName(patientDTO.getName())
+                            .patientEmail(patientDTO.getEmail())
+                            .patientPhone(patientDTO.getPhone())
+                            .doctorId(appointment.getDoctorId())
+                            .doctorName(doctorDTO.getName())
+                            .appointmentTime(appointment.getAppointmentTime())
+                            .status(appointment.getStatus())
+                            .reason(appointment.getReason())
+                            .notes(appointment.getNotes()).build();
+                }).toList();
+    }
+
+//    @Override
+//    public List<PatientDTO> getAllPatientsByDoctorId(Long doctorId) {
+////        List<Long> patientIds = appointmentRepository.getAllPatientIdsByDoctorId(doctorId);
+//
+//    }
 }

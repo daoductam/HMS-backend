@@ -35,6 +35,12 @@ public class DoctorAPI {
 
     }
 
+    @GetMapping("/getProfileId/{id}")
+    public ResponseEntity<Long> getProfileId(@PathVariable Long id){
+        return new ResponseEntity<>(doctorService.getDoctorById(id).getProfilePictureId(), HttpStatus.OK);
+
+    }
+
     @PutMapping("/update")
     public ResponseEntity<DoctorDTO> updateDoctor(@RequestBody DoctorDTO doctorDTO){
         return new ResponseEntity<>(doctorService.updatePatient(doctorDTO), HttpStatus.OK);

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -55,5 +56,13 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public List<DoctorDropdown> getPatientsById(List<Long> ids) {
         return patientRepository.findAllPatientDropdownsByIds(ids);
+    }
+
+    @Override
+    public List<PatientDTO> findAllByIds(List<Long> ids) {
+        return patientRepository.findAllById(ids)
+                .stream()
+                .map(Patient::toDTO)
+                .collect(Collectors.toList());
     }
 }

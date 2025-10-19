@@ -1,6 +1,9 @@
 package com.hms.user.UserMS.service;
 
+import com.hms.user.UserMS.clients.Profile;
 import com.hms.user.UserMS.clients.ProfileClient;
+import com.hms.user.UserMS.dto.MonthlyRoleCountDTO;
+import com.hms.user.UserMS.dto.RegistrationCountsDTO;
 import com.hms.user.UserMS.dto.Roles;
 import com.hms.user.UserMS.dto.UserDTO;
 import com.hms.user.UserMS.entity.User;
@@ -12,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service("userService")
@@ -67,5 +71,25 @@ public class UserServiceImpl implements UserService{
     public UserDTO getUser(String email) {
         return userRepository.findByEmail(email).orElseThrow(
                 () -> new HmsException(ErrorCode.EMAIL_NOT_FOUND)).toDTO();
+    }
+
+    @Override
+    public Long getProfile(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new HmsException(ErrorCode.USER_NOT_FOUND));
+        if (user.getRole().equals(Roles.DOCTOR)) {
+            return profileClient.getDoctor(user.getProfileId());
+        } else if (user.getRole().equals(Roles.PATIENT)) {
+            return profileClient.getPatient(user.getProfileId());
+        }
+        throw new HmsException(ErrorCode.INVALID_USER_ROLE);
+    }
+
+    @Override
+    public RegistrationCountsDTO getMonthlyRegistrationCounts() {
+        List<MonthlyRoleCountDTO> doctorCounts =
+                userRepository.countRegistrationsByRoleGroupedByMonth(Roles.DOCTOR);
+        List<MonthlyRoleCountDTO> patientCounts =
+                userRepository.countRegistrationsByRoleGroupedByMonth(Roles.PATIENT);
+        return new RegistrationCountsDTO(doctorCounts, patientCounts);
     }
 }

@@ -8,6 +8,8 @@ import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -29,6 +31,8 @@ public class UserDTO {
     String password;
     Roles role;
     Long profileId;
+    LocalDateTime createdAt;
+    LocalDateTime updatedAt;
     public User toEntity() {
         return User.builder()
                 .id(this.id)
@@ -37,6 +41,8 @@ public class UserDTO {
                 .password(this.password)
                 .role(this.role)
                 .profileId(this.profileId)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
                 .build();
     }
 }
