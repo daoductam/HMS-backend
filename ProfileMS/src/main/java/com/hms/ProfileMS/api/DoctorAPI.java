@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/profile/doctor")
-@CrossOrigin
+    @CrossOrigin
 @Validated
 @RequiredArgsConstructor
 public class DoctorAPI {
